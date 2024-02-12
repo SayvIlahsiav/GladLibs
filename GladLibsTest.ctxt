@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=GladLibsTest
+comment0.text=\r\n\ The\ GladLibsTest\ class\ is\ a\ JUnit\ test\ suite\ \r\n\ designed\ to\ validate\ the\ functionality\ of\ the\ GladLibs\ class,\ \r\n\ ensuring\ that\ placeholders\ are\ correctly\ replaced\ \r\n\ and\ inputs\ without\ placeholders\ remain\ unchanged.\r\n\ \r\n\ @author\ Vaishali\ Vyas\r\n\ @version\ 2024-02-12\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ tearDown()
+comment3.params=
+comment3.target=void\ testProcessWordReplacesPlaceholder()
+comment4.params=
+comment4.target=void\ testProcessWordWithoutPlaceholderRemainsUnchanged()
+numComments=5
