@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=ResourceLoader
+comment0.text=\r\n\ The\ ResourceLoader\ class\ provides\ a\ utility\ method\ \r\n\ to\ read\ and\ return\ lines\ from\ either\ a\ local\ file\ \r\n\ or\ a\ URL\ as\ an\ ArrayList<String>,\ \r\n\ handling\ both\ file\ paths\ and\ web\ resources\ seamlessly.\r\n\ \r\n\ @author\ Vaishali\ Vyas\r\n\ @version\ 2024-02-12\r\n
+comment1.params=sourcePath
+comment1.target=java.util.ArrayList\ readResourceLines(java.lang.String)
+comment1.text=\r\n\ Reads\ lines\ from\ a\ file\ or\ URL\ and\ returns\ them\ as\ an\ ArrayList.\r\n\ @param\ sourcePath\ Path\ to\ the\ file\ or\ URL\ to\ read.\r\n\ @return\ ArrayList\ containing\ lines\ read\ from\ the\ source.\r\n
+numComments=2
