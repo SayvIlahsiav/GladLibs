@@ -16,6 +16,9 @@ public class GladLibs {
     private HashMap<String, ArrayList<String>> wordCategoriesMap;
     private Random random;
     
+    private ArrayList<String> wordsUsed;
+    private ArrayList<String> categoriesUsed;
+    
     private static String dataSourceURL = "http://dukelearntoprogram.com/course3/data";
     private static String dataSourceDirectory = "data";
     
@@ -24,6 +27,8 @@ public class GladLibs {
      */
     public GladLibs() {
         wordCategoriesMap = new HashMap<>();
+        wordsUsed = new ArrayList<>();
+        categoriesUsed = new ArrayList<>();
         initializeFromSource(dataSourceDirectory);
         random = new Random();
     }
@@ -35,6 +40,8 @@ public class GladLibs {
      */
     public GladLibs(String source) {
         wordCategoriesMap = new HashMap<>();
+        wordsUsed = new ArrayList<>();
+        categoriesUsed = new ArrayList<>();
         initializeFromSource(source);
         random = new Random();
     }
@@ -46,9 +53,32 @@ public class GladLibs {
      */
     private void initializeFromSource(String source) {
         String[] labels = {"adjective", "noun", "color", "country", "name", "animal", "timeframe", "verb", "fruit"};
+        
         for (String label : labels) {
             wordCategoriesMap.put(label, ResourceLoader.readResourceLines(source + "/" + label + ".txt"));
-        }   
+        }
+        /*
+        for (String label : labels) {
+            wordCategoriesMap.put(label, readIt(source + "/" + label + ".txt"));
+        }
+        */
+    }
+    
+    private ArrayList<String> readIt(String source){
+    	ArrayList<String> list = new ArrayList<String>();
+    	if (source.startsWith("http")) {
+    	    URLResource resource = new URLResource(source);
+    	    for(String line : resource.lines()) {
+    	        list.add(line);
+    	    }
+    	}
+    	else {
+    	    FileResource resource = new FileResource(source);
+    	    for(String line : resource.lines()) {
+    	        list.add(line);
+    	    }
+    	}
+    	return list;
     }
     
     /**
@@ -72,6 +102,9 @@ public class GladLibs {
         if (label.equals("number")){
             return "" + (random.nextInt(50) + 5);
         } else if (wordCategoriesMap.containsKey(label)) {
+            if (!categoriesUsed.contains(label)) {
+                categoriesUsed.add(label);
+            }
             return randomFrom(wordCategoriesMap.get(label));
         } else {
             System.err.println("Label does not exist: " + label);
@@ -93,7 +126,11 @@ public class GladLibs {
         }
         String prefix = w.substring(0, first);
         String suffix = w.substring(last + 1);
-        String sub = getSubstitute(w.substring(first + 1, last));
+        String sub = "";
+        do {
+            sub = getSubstitute(w.substring(first + 1, last));
+        } while (wordsUsed.contains(sub));
+        wordsUsed.add(sub);
         return prefix + sub + suffix;
     }
     
@@ -134,11 +171,38 @@ public class GladLibs {
     }
     
     /**
+     * This method returns the total number of words in all the Lists in the Map.
+     */
+    private int totalWordsInMap() {
+        int totalWordsInMap = 0;
+        for (String s : wordCategoriesMap.keySet()) {
+            totalWordsInMap += wordCategoriesMap.get(s).size();
+        }
+        return totalWordsInMap;
+    }
+    
+    /**
+     * This method returns the total number of words in the ArrayLists of the categories that were used for a particular GladLib.
+     */
+    private int totalWordsConsidered() {
+        int totalWordsConsidered = 0;
+        for (String s : categoriesUsed) {
+            ArrayList<String> words = wordCategoriesMap.get(s);
+            if (words != null) {
+                totalWordsConsidered += wordCategoriesMap.get(s).size();
+            }
+        }
+        return totalWordsConsidered;
+    }
+    
+    /**
      * Generates and prints a story to the console using the default template.
      */
     public void makeStory() {
         System.out.println("\n");
         String story = fromTemplate("data/madtemplate.txt");
         printOut(story, 60);
-    }
+        System.out.println("\n\nTotal number of words that were possible to pick from Words in Map are: " + totalWordsInMap());
+        System.out.println("Total number of words that were possible to pick from Words Considered are: " + totalWordsConsidered());
+    }    
 }
